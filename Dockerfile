@@ -1,6 +1,9 @@
 # Use Amazon Corretto OpenJDK 17 as base image
 FROM amazoncorretto:17-alpine AS builder
 
+# Install Maven and other build tools
+RUN apk add --no-cache maven
+
 # Set working directory
 WORKDIR /app
 
