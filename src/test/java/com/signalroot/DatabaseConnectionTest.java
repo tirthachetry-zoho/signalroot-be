@@ -7,8 +7,8 @@ import org.springframework.test.context.TestPropertySource;
 @SpringBootTest
 @TestPropertySource(properties = {
     "spring.datasource.url=jdbc:postgresql://localhost:5432/signalroot",
-    "spring.datasource.username=signalroot",
-    "spring.datasource.password=signalroot",
+    "spring.datasource.username=test_user",
+    "spring.datasource.password=test_password",
     "spring.jpa.hibernate.ddl-auto=none"
 })
 public class DatabaseConnectionTest {

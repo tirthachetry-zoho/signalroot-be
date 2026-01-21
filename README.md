@@ -107,8 +107,8 @@ server.servlet.context-path=/
 
 # Database Configuration
 spring.datasource.url=jdbc:postgresql://localhost:5432/signalroot
-spring.datasource.username=signalroot
-spring.datasource.password=signalroot
+spring.datasource.username=your_db_username
+spring.datasource.password=your_secure_db_password
 spring.datasource.driver-class-name=org.postgresql.Driver
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=false
@@ -141,9 +141,9 @@ export SPRING_PROFILES_ACTIVE=dev
 
 # Production
 export DATABASE_URL=jdbc:postgresql://prod-db:5432/signalroot
-export DATABASE_USERNAME=signalroot
-export DATABASE_PASSWORD=your-secure-password
-export WEBHOOK_SECRET=your-webhook-secret
+export DATABASE_USERNAME=prod_db_username
+export DATABASE_PASSWORD=your_secure_prod_db_password
+export WEBHOOK_SECRET=your_secure_webhook_secret
 export SLACK_WEBHOOK_URL=https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK
 ```
 
@@ -301,7 +301,7 @@ mvn clean package
 server.port=8080
 server.ssl.enabled=true
 server.ssl.key-store=classpath:keystore.p12
-server.ssl.key-store-password=changeit
+server.ssl.key-store-password=your_secure_keystore_password
 
 # Database with HikariCP
 spring.datasource.hikari.maximum-pool-size=20
@@ -321,11 +321,11 @@ docker build -t signalroot-backend:prod .
 
 # Run production container
 docker run -d \
-  --name signalroot-prod \
+  --name signalroot-backend \
   -p 8080:8080 \
-  -e DATABASE_URL=prod-db-url \
-  -e DATABASE_USERNAME=prod-user \
-  -e DATABASE_PASSWORD=prod-password \
+  -e DATABASE_URL \
+  -e DATABASE_USERNAME \
+  -e DATABASE_PASSWORD \
   signalroot-backend:prod
 ```
 
