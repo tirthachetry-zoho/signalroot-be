@@ -1,0 +1,28 @@
+services:
+  # Type of service
+  type: web
+  
+  # Name of your service
+  name: signalroot-backend
+  
+  # Runtime environment
+  runtime: docker
+  
+  # Repository and branch to deploy
+  repo: https://github.com/tirthachetry-zoho/signalroot-be.git
+  branch: main
+  
+  # Build configuration
+  dockerfilePath: ./Dockerfile
+  dockerContext: .
+  
+  # Health check path
+  healthCheckPath: /actuator/health
+  
+  # Port to expose
+  envVars:
+    - key: PORT
+      value: 8080
+      
+  # Add environment variables here in Render dashboard
+  # DATABASE_URL, DATABASE_USERNAME, DATABASE_PASSWORD, etc.

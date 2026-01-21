@@ -285,48 +285,60 @@ mvn clean package
 # signalroot-0.0.1-SNAPSHOT.jar
 ```
 
-### Production Deployment
+### Option 1: Render (Recommended for Production)
 
-#### Environment Setup
+Render deploys Docker containers, not Spring Boot directly. Here's how to deploy:
 
-1. **Database**: PostgreSQL with connection pooling
-2. **Application Server**: Tomcat with SSL termination
-3. **Load Balancer**: AWS ALB or NGINX
-4. **Monitoring**: Spring Actuator with metrics
+1. **Connect GitHub Repository**
+   - Go to [Render Dashboard](https://render.com)
+   - Click "New +" → "Web Service"
+   - Connect your GitHub repository
+   - Select `signalroot-be` repository
 
-#### Configuration
+2. **Configure Build Settings**
+   ```yaml
+   buildCommand: docker build -t signalroot-backend .
+   startCommand: docker run -p 8080:8080 signalroot-backend
+   # Or use docker-compose if preferred
+   buildCommand: docker-compose build
+   startCommand: docker-compose up
+   ```
 
-```properties
-# Production application.properties
-server.port=8080
-server.ssl.enabled=true
-server.ssl.key-store=classpath:keystore.p12
-server.ssl.key-store-password=your_secure_keystore_password
+3. **Set Environment Variables**
+   - `DATABASE_URL`: Your PostgreSQL connection string
+   - `DATABASE_USERNAME`: Your database username
+   - `DATABASE_PASSWORD`: Your database password
+   - `WEBHOOK_SECRET`: Your secure webhook secret
+   - `SLACK_WEBHOOK_URL`: Your Slack webhook URL
 
-# Database with HikariCP
-spring.datasource.hikari.maximum-pool-size=20
-spring.datasource.hikari.minimum-idle=5
-spring.datasource.hikari.connection-timeout=30000
-spring.datasource.hikari.idle-timeout=600000
+4. **Deploy**
+   - Render will build the Docker image and deploy
+   - Your app will be available at: `https://signalroot-be.onrender.com`
 
-# Production profiles
-spring.profiles.active=prod
-```
+**Important**: Render uses Docker containers, so the Dockerfile is required for deployment.
 
-#### Docker Deployment
+### Option 2: Docker Deployment
+
+For self-hosted deployment using Docker:
 
 ```bash
-# Build production image
-docker build -t signalroot-backend:prod .
+# Build the application
+mvn clean package -DskipTests
 
-# Run production container
+# Build Docker image
+docker build -t signalroot-backend .
+
+# Run with Docker Compose
+docker-compose up -d
+
+# Or run standalone
 docker run -d \
   --name signalroot-backend \
   -p 8080:8080 \
-  -e DATABASE_URL \
-  -e DATABASE_USERNAME \
-  -e DATABASE_PASSWORD \
-  signalroot-backend:prod
+  -e DATABASE_URL=your-production-db-url \
+  -e DATABASE_USERNAME=your-db-user \
+  -e DATABASE_PASSWORD=your-db-password \
+  signalroot-backend
 ```
 
 ## 📊 Monitoring & Observability
