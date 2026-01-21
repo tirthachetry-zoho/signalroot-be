@@ -1,5 +1,5 @@
-# Use Eclipse Temurin OpenJDK 17 as base image
-FROM eclipse-temurin:17-jdk-slim AS builder
+# Use OpenJDK 17 as base image
+FROM openjdk:17 AS builder
 
 # Set working directory
 WORKDIR /app
@@ -12,7 +12,7 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 # Runtime stage - smaller image
-FROM eclipse-temurin:17-jre-slim
+FROM openjdk:17-slim
 
 # Install curl for health checks
 RUN apt-get update && apt-get install -y curl
